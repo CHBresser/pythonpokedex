@@ -20,6 +20,7 @@ def queryDB(table, column, id):
     some_id = id
     listHeaders = []
     pokemonID = []
+    abilityList = []
 
     # Connect to SQLite3 Database
     conn = sqlite3.connect(sqlite_file)
@@ -53,7 +54,11 @@ def queryDB(table, column, id):
     
     print("Abilities: ")
     for id in pokemonID:
-        c.execute("SELECT abilities.identifier FROM pokemon_abilities INNER JOIN abilities ON abilities.id = pokemon_abilities.ability_id WHERE pokemon_abilities.pokemon_id='{aID}'".\
+        c.execute('''SELECT pokemon.identifier, abilities.identifier  
+            FROM pokemon_abilities
+            INNER JOIN abilities ON abilities.id = pokemon_abilities.ability_id 
+            INNER JOIN pokemon ON pokemon.id = pokemon_abilities.pokemon_id
+            WHERE pokemon_abilities.pokemon_id="{aID}"'''.\
             format(aID=id))
         abilities = c.fetchall()
         print(abilities)
