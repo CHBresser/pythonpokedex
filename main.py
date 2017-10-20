@@ -54,6 +54,7 @@ def queryDB(table, column, id):
     
     print("Abilities: ")
     for id in pokemonID:
+        # Grab the pokemon name and ability name using the id #'s from pokemon_abilities
         c.execute('''SELECT pokemon.identifier, abilities.identifier  
             FROM pokemon_abilities
             INNER JOIN abilities ON abilities.id = pokemon_abilities.ability_id 
@@ -62,6 +63,8 @@ def queryDB(table, column, id):
             format(aID=id))
         abilities = c.fetchall()
         print(abilities)
+        for row in abilities:
+            print(row)
         
     tabstring = x.get_string
     
