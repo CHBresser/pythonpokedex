@@ -74,6 +74,9 @@ def queryDB(table, column, id):
                 formatHeader.append(tempList[1])
     if(needAbil == 'y' or needAbil == 'Y' or needAbil == 'yes' or needAbil == 'Yes' or needAbil == 'YES'):
         pokeTable = PrettyTable(formatHeader)
+        #encounters = input("Would you like their encounter locations also? ")
+        #if (encounters == 'y'):
+         #   encounterTable = PrettyTable(['Pokemon', 'Encounter Location'])
         for id in pokemonID:
             # Grab the pokemon name and ability name using the id #'s from pokemon_abilities
             c.execute('''SELECT pokemon.identifier, pokemon.height, pokemon.weight, pokemon.base_experience, abilities.identifier
@@ -85,9 +88,20 @@ def queryDB(table, column, id):
             abilities = c.fetchall()
             for row in abilities:
                 pokeTable.add_row(row)
+            # Encounters is a WIP currently not working properly with WHERE statement. 
+            #if (encounters == 'y'):
+               # c.execute('''SELECT pokemon.identifier, location_areas.identifier
+                #    FROM encounters
+                 #   INNER JOIN pokemon ON encounters.pokemon_id = pokemon.id
+                  #  INNER JOIN location_areas ON encounters.location_area_id = location_areas.location_id
+                   # WHERE pokemon.id="{aID}"'''.\
+                   # format(aID=id))
+                #encount = c.fetchall()
+                #for row in encount:
+                #    encounterTable.add_row(row)
         print(pokeTable.get_string(sortby="identifier"))
-        
-
+        #if (encounters == 'y'):
+         #   print(encounterTable.get_string(sortby='Pokemon'))
     #Close SQL connection
     conn.close()
     
