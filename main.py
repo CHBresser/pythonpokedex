@@ -21,9 +21,7 @@ def queryDB(table, column, id):
     some_id = id
     listHeaders = []
     pokemonID = []
-    abilityList = []
-    pokemonAList = []
-    headerList = ['pokemon.identifier', 'pokemon.height', 'pokemon.weight', 'abilities.identifier']
+    headerList = ['pokemon.identifier', 'pokemon.height', 'pokemon.weight', 'pokemon.base_experience', 'abilities.identifier']
     # Connect to SQLite3 Database
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
@@ -55,26 +53,30 @@ def queryDB(table, column, id):
     for row in all_rows:
         x.add_row(row)
         if(table == "pokemon"):
+            # IF table is pokemon, while iterating through rows, append the pokemon id number to the pokemon id list (used for abilities)
             pokemonID.append(row[0])
-    # "Display" table
-    print(x)
+    # "Display" table if not pokemon, if pokemon carry on and gather more information
+    if (table != 'pokemon'):
+        print(x)
     # Display abilities
     needAbil = ''
     if(table == 'pokemon'):
         needAbil = input("Would you like to see their abilities? ")
         formatHeader = [] 
         for item in headerList:
+            # Split the string of headers into a list of (pokemon, identifier, abilities, identifier, etc)
             tempList = item.split('.')
+            # PrettyTable won't take more than one Field name of the same name, so I must iterate through the fields and make sure that pokemon.identifier and abilities.identifier don't both split to identifier
             if(item == 'abilities.identifier'):
                 formatHeader.append('Ability ID')
             else:
+            # If not abilities.identifier then append the second half of each split (--pokemon--, identifier)
                 formatHeader.append(tempList[1])
     if(needAbil == 'y' or needAbil == 'Y' or needAbil == 'yes' or needAbil == 'Yes' or needAbil == 'YES'):
         pokeTable = PrettyTable(formatHeader)
         for id in pokemonID:
             # Grab the pokemon name and ability name using the id #'s from pokemon_abilities
-            #c.execute('''SELECT pokemon.identifier, abilities.identifier
-            c.execute('''SELECT pokemon.identifier, pokemon.height, pokemon.weight, abilities.identifier
+            c.execute('''SELECT pokemon.identifier, pokemon.height, pokemon.weight, pokemon.base_experience, abilities.identifier
                 FROM pokemon_abilities
                 INNER JOIN abilities ON abilities.id = pokemon_abilities.ability_id 
                 INNER JOIN pokemon ON pokemon.id = pokemon_abilities.pokemon_id
@@ -82,10 +84,8 @@ def queryDB(table, column, id):
                 format(aID=id))
             abilities = c.fetchall()
             for row in abilities:
-                #pokemonAList.append(row[0])
-                #abilityList.append(row[1])
                 pokeTable.add_row(row)
-            print(pokeTable)
+        print(pokeTable.get_string(sortby="identifier"))
         
 
     #Close SQL connection
