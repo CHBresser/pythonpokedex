@@ -14,7 +14,7 @@ def index():
 @app.route('/pokemon/<string:name>/')
 def pokemon(name):
     # Connect to SQLite3 Database
-    sqlite_file = '../veekun-pokedex.sqlite'
+    sqlite_file = 'veekun-pokedex.sqlite'
     conn = sqlite3.connect(sqlite_file)
     c = conn.cursor()
     
