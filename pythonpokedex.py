@@ -13,6 +13,8 @@ def index():
 # that it is a pokemon name.     
 @app.route('/pokemon/<string:name>/')
 def pokemon(name):
+    # Convert name to lower
+    name = name.lower()
     # Connect to SQLite3 Database
     sqlite_file = 'veekun-pokedex.sqlite'
     conn = sqlite3.connect(sqlite_file)
