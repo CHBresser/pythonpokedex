@@ -1,0 +1,60 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ name.title() }} - #{{ all_rows[0][0] }}</title>
+    <link href="https://fonts.googleapis.com/css?family=Cabin:700i|Open+Sans" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row bg-primary">
+        <div class="col-lg-12 col-sm-12 col-md-12 media">
+            <div class="page-header">
+                <div class="media-left media-top"><img class="media-object img-thumbnail" style="width:100px" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{pokemon_id}}.png"></img></div>
+                <div class="media-body"><h1 class="media-heading">{{name.title()}}</h1></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-hover table-responsive">
+            {% for column in columns %}
+                <th>{{ column[1] }}</th>
+            {% endfor %}
+            {% for row in all_rows %}
+                <tr>
+            {% for item in row %}
+                <td>{{ item }}</td>
+            {% endfor %}
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Stats: </div>
+                <div class="list-group panel-body">
+                {% for column in base_stats %}
+                    <a class="list-group-item">
+                    <h4 class="list-group-item-heading">{{column[0].upper()}}</h4>
+                    <p class="list-group-item-text">{{column[1]}}</p>
+                    </a>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
