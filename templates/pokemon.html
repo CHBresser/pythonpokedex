@@ -2,7 +2,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ name.title() }} - #{{ all_rows[0][0] }}</title>
+    <title>{{ curPokemon.name.title() }} - #{{ curPokemon.id }}</title>
     <link href="https://fonts.googleapis.com/css?family=Cabin:700i|Open+Sans" rel="stylesheet">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -22,25 +22,25 @@
     <div class="row bg-primary">
         <div class="col-lg-12 col-sm-12 col-md-12 media">
             <div class="page-header">
-                <div class="media-left media-top"><img class="media-object img-thumbnail" style="width:100px" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{pokemon_id}}.png"></img></div>
-                <div class="media-body"><h1 class="media-heading">{{name.title()}}</h1></div>
+                <div class="media-left media-top"><img class="media-object img-thumbnail" style="width:100px" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{curPokemon.idLong()}}.png"></img></div>
+                <div class="media-body"><h1 class="media-heading">{{curPokemon.name.title()}}</h1></div>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-2 text-center light-blue-bg" style="border: 5px solid #0099ff;padding:0px;">
-            <div class="light-blue-bg" style="margin-top:0px;"><h2 style="margin: 0px;">{{ name.title() }}<small style="margin-left: 2px">#{{ all_rows[0][0] }}</small></h2><br></div>
-            <img class="img-thumbnail img-responsive img-profile" style="width:200px;border: 3px solid black; margin-bottom: 10px;" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{pokemon_id}}.png"></img>
+            <div class="light-blue-bg" style="margin-top:0px;"><h2 style="margin: 0px;">{{ curPokemon.name.title() }}<small style="margin-left: 2px">#{{ curPokemon.idLong() }}</small></h2><br></div>
+            <img class="img-thumbnail img-responsive img-profile" style="width:200px;border: 3px solid black; margin-bottom: 10px;" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{curPokemon.id}}.png"></img>
         </div>
         <div class="col-md-4 text-center">
             <table class="table table-responsive text-center">
                 <tr>
-                <td>Type</td><td class="bg-{{type}}">{{  type.title() }}</td>
+                <td>Type</td><td class="bg-{{curPokemon.type}}">{{  curPokemon.type.title() }}</td>
                 </tr>
                 <tr>
-                <td>Height</td><td>{{ all_rows[0][3]}}</td>
+                <td>Height</td><td>{{ curPokemon.height}}</td>
                 </tr>
-                <td>Weight</td><td>{{ all_rows[0][4]}}</td>
+                <td>Weight</td><td>{{ curPokemon.weight}}</td>
                 </tr>
             </table>
         </div>
@@ -63,7 +63,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Stats: </div>
                 <div class="list-group panel-body">
-                {% for column in base_stats %}
+                {% for column in curPokemon.stats %}
                     <a class="list-group-item">
                     <h4 class="list-group-item-heading">{{column[0].upper()}}</h4>
                     <p class="list-group-item-text">{{column[1]}}</p>
