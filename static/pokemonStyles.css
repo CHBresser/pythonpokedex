@@ -6,6 +6,9 @@ body {
     font-family: 'Open Sans', sans-serif; 
 }
 
+.vertical-align {
+    vertical-align: middle;
+}
 .img-profile {
     margin-bottom: 15px;
 }

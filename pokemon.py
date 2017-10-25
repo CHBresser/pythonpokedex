@@ -5,8 +5,9 @@ class Pokemon:
     name = ""
     height = ""
     weight = "" 
-    type = ""
+    type = []
     stats = []
+    abilities = []
     
     def __init__(self, pokename):
         self.name = pokename
@@ -35,8 +36,7 @@ class Pokemon:
                     INNER JOIN pokemon_types ON pokemon_types.type_id = types.id
                     WHERE pokemon_types.pokemon_id="{pid}"'''.\
              format(pid=self.id))
-        temptype = c.fetchall()
-        self.type = temptype[0][0]
+        self.type = c.fetchall()
         
         # Grab base stats before converting pokemon_id to long notation
         c.execute('''SELECT stats.identifier, pokemon_stats.base_stat
@@ -45,6 +45,14 @@ class Pokemon:
                  WHERE pokemon_stats.pokemon_id="{sID}"'''.\
           format(sID=self.id)) 
         self.stats = c.fetchall()
+        
+        #Grab pokemon abilities
+        c.execute('''SELECT abilities.identifier
+                    FROM abilities
+                    INNER JOIN pokemon_abilities ON pokemon_abilities.ability_id = abilities.id
+                    WHERE pokemon_abilities.pokemon_id="{pID}"'''.\
+                format(pID=self.id))
+        self.abilities = c.fetchall()
         
         # Close connection to DB
         conn.close()
