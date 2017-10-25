@@ -28,6 +28,23 @@
         </div>
     </div>
     <div class="row">
+        <div class=col-md-6" style="float: left; margin: 0px;">
+            <ul class="pager" style="vertical-align: middle; margin: 0px;">
+                <li class="previous"><a href="/id/{{curPokemon.id - 1}}">Previous</a></li>
+                <li><img class="img-thumbnail img-responsive img-profile" style="width:75px;border: 3px solid black; float: left; margin-right: 5px;" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{curPokemon.idLongOther("previous")}}.png"></img></li>
+                <li><h3 style="text-align: left; float: left;">{{curPokemon.nameOther("previous").title()}}</h3></li>
+            </ul>
+        </div>
+        <div class="col-md-6" style="float: right; margin: 0px;">
+        `   <ul class="pager" style="vertical-align: middle; margin: 0px;">
+                <li class="next"><a href="/id/{{curPokemon.id + 1}}">Next</a></li>
+                <li><img class="img-thumbnail img-responsive img-profile" style="width:75px;border: 3px solid black; float: right; margin-left: 5px; margin-bottom: 0px;" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{curPokemon.idLongOther("next")}}.png"></img></li>
+                <li><h3 style="text-align: right; float:right;">{{curPokemon.nameOther("next").title()}}</h3></li>
+            </ul>
+        </div>
+        <hr style="width:100%; margin: 0px;">
+    </div>
+    <div class="row">
         <div class="col-md-2 text-center light-blue-bg" style="border: 5px solid #0099ff;padding:0px;">
             <div class="light-blue-bg" style="margin-top:0px;"><h2 style="margin: 0px;">{{ curPokemon.name.title() }}<small style="margin-left: 2px">#{{ curPokemon.id }}</small></h2><br></div>
             <img class="img-thumbnail img-responsive img-profile" style="width:200px;border: 3px solid black; margin-bottom: 10px;" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{curPokemon.idLong()}}.png"></img>
@@ -37,7 +54,7 @@
                 <tr>
                 <td>Type</td>
                 {% if curPokemon.type[1] %}
-                    <td class="text-center">
+                    <td class="text-center" style="padding: 0px;">
                      <table class="text-center" style="width: 100%; height: 100%;">
                     {% for row in curPokemon.type %}
                         <tr><td class="bg-{{row[0]}}">{{row[0].title()}}</td></tr>

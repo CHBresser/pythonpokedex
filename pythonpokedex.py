@@ -17,6 +17,23 @@ def pokemon(name):
     curPokemon = Pokemon(name)
     return render_template(
         'pokemon.html', **locals())
+
+# Any page from /id/# will look up the id and go to the appropriate page
+@app.route('/id/<string:id>/')
+def idPokemon(id):
+    # Connect to SQLite3 Database
+    sqlite_file = 'veekun-pokedex.sqlite'
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+       
+    # Currently gets all information from the pokemon table using the id from the URL
+    c.execute("SELECT * FROM pokemon WHERE id='{pid}'".\
+            format(pid=id))
+    all_rows = c.fetchall()
+    
+    curPokemon = Pokemon(all_rows[0][1])
+    return render_template(
+        'pokemon.html', **locals())
         
 # Autorun the app on 0.0.0.0 when this python script is called. 
 if __name__ == "__main__":
