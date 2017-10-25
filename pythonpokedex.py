@@ -43,6 +43,13 @@ def pokemon(name):
           format(sID=pokemon_id)) 
     base_stats = c.fetchall()
     
+    c.execute('''SELECT types.identifier FROM types
+                INNER JOIN pokemon_types ON pokemon_types.type_id = types.id
+                WHERE pokemon_types.pokemon_id="{pid}"'''.\
+             format(pid=pokemon_id))
+    type = c.fetchall()
+    type = type[0][0]
+    
     # Determine Length of pokemon_id, if 1 digit add two 0's at beginning, or 2 add 1 0, etc
     # This is used in the template to hotlink from Nintendo's site, is not a viable solution. Will need to host profiles later on
     if(len(pokemon_id) == 1):
