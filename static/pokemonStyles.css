@@ -63,9 +63,9 @@ body {
 
 .bg-dragon {background-color: #7038F8; border: 1px solid #4924A1;}
 
-.bg-ghost {background-color: #705898; border: 1px solid #493963;}
+.bg-ghost {background-color: #705898; border: 1px solid #493963; color: white;}
 
-.bg-dark {background-color: #705848; border: 1px solid #49392F;}
+.bg-dark {background-color: #705848; border: 1px solid #49392F;color: white;}
 
 .bg-steel {background-color: #B8B8D0; border: 1px solid #787887;}
 
@@ -105,4 +105,8 @@ div.tab button.active {
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;
+}
+
+.center {
+    text-align: center;
 }

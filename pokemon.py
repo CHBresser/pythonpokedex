@@ -8,6 +8,10 @@ class Pokemon:
     type = []
     stats = []
     abilities = []
+    moves = []
+    types = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 
+        'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark',
+        'steel', 'fairy']
     
     def __init__(self, pokename="", pokeid=""):
         if pokename:
@@ -56,6 +60,15 @@ class Pokemon:
                     WHERE pokemon_abilities.pokemon_id="{pID}"'''.\
                 format(pID=self.id))
         self.abilities = c.fetchall()
+        
+        # Get Available Moves
+        c.execute('''SELECT moves.identifier, types.identifier, moves.power, moves.pp, moves.accuracy
+                     FROM moves
+                     INNER JOIN pokemon_moves ON pokemon_moves.move_id = moves.id
+                     INNER JOIN types ON moves.type_id = types.id
+                     WHERE pokemon_moves.pokemon_id="{pID}"'''.\
+                format(pID=self.id))
+        self.moves = c.fetchall()
         
         # Close connection to DB
         conn.close()
