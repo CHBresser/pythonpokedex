@@ -62,7 +62,7 @@ class Pokemon:
         self.abilities = c.fetchall()
         
         # Get Available Moves
-        c.execute('''SELECT moves.identifier, types.identifier, moves.power, moves.pp, moves.accuracy
+        c.execute('''SELECT DISTINCT moves.identifier, types.identifier, moves.power, moves.pp, moves.accuracy
                      FROM moves
                      INNER JOIN pokemon_moves ON pokemon_moves.move_id = moves.id
                      INNER JOIN types ON moves.type_id = types.id
