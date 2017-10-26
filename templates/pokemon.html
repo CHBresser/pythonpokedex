@@ -44,9 +44,9 @@
                 <h3 style="text-align: right; float:right;">{{curPokemon.nameOther("next").title()}}</h3>
             </a>
         </div>
-        <hr style="width:100%; margin: 0px;">
     </div>
-    <div class="row">
+    <hr style="width:100%; margin-top: 7px; margin-bottom: 7px;">
+    <div class="row" style="margin-top: 10px;">
         <div class="col-md-2 text-center light-blue-bg" style="border: 5px solid #0099ff;padding:0px;">
             <div class="light-blue-bg" style="margin-top:0px;"><h2 style="margin: 0px;">{{ curPokemon.name.title() }}<small style="margin-left: 2px">#{{ curPokemon.id }}</small></h2><br></div>
             <img class="img-thumbnail img-responsive img-profile" style="width:200px;border: 3px solid black; margin-bottom: 10px;" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{curPokemon.idLong()}}.png"></img>
@@ -90,9 +90,10 @@
         </div>
     </div>
     <div class="row">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs" style="margin-top: 10px;">
             <li class="active"><a data-toggle="tab" href="#stats">Stats</a></li>
             <li><a data-toggle="tab" href="#moves">Moves</a></li>
+            <li><a data-toggle="tab" href="#evolution">Evolution Chain</a></li>
         </ul>
         <div class="col-lg-12 col-md-12 col-sm-12 tab-content">
             <div class="panel panel-default tab-pane fade in active" id="stats">
@@ -135,6 +136,38 @@
                     {% endfor %}
                     </tbody>
                 </table>
+            </div>
+            <div class="tab-pane fade bg-primary" id="evolution" style="margin-top: 15px">
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                        {% if curPokemon.evolvesFrom %}
+                            <img class="img-thumbnail img-responsive img-profile" style="width:150px;border: 3px solid black; float: left; margin-right: 5px; margin-bottom: 0px;" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{curPokemon.idLongOther(curPokemon.queryIDFromName(curPokemon.evolvesFrom))}}.png"></img>
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                        <img class="img-thumbnail img-responsive img-profile" style="width:150px;border: 3px solid black; margin-bottom: 10px; float:left;" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{curPokemon.idLong()}}.png"></img>
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                        {% if curPokemon.evolvesTo %}
+                            <img class="img-thumbnail img-responsive img-profile" style="width:150px;border: 3px solid black; float:left; margin-left: 5px; margin-bottom: 0px;" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{curPokemon.idLongOther(curPokemon.queryIDFromName(curPokemon.evolvesTo))}}.png"></img>
+                            
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                        {% if curPokemon.evolvesFrom %}
+                            <h2 style="text-align: left;">{{curPokemon.evolvesFrom.title()}}</h2>
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                        <h2>{{curPokemon.name.title()}}</h2>
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4">
+                        {% if curPokemon.evolvesTo %}
+                            <h2>{{curPokemon.evolvesTo.title()}}</h2>
+                        {% endif %}
+                    </div>
             </div>
         </div>
     </div>
