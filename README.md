@@ -13,4 +13,7 @@ PythonPokedex is a Work in Progress piece currently on version 0.1, it is a text
 
 Plans for v1.0:
 
-Web interface using Python's Flash framework to access the information in a more user friendly manner.
+Web interface using Python's Flask framework to access the information in a more user friendly manner.
+
+
+Current Dev Branch project: is as detailed(ish) in v1.0 plans, I am currently in the VERY early stages of the flask webpage, using Bootstrap framework
