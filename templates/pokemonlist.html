@@ -1,0 +1,88 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pokemon List</title>
+    <link href="https://fonts.googleapis.com/css?family=Cabin:700i|Open+Sans" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Datatables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+    <!-- Datatables script -->
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://fonts.googleapis.com/css?family=Cabin:700i|Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='pokemonStyles.css') }}">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="navbar navbar-inverse" style="height: 75px;">
+        <div class="col-lg-12 col-sm-12 col-md-12">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">Python Pokedex</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle active" data-toggle="dropdown" href="#">Pokemon
+                    <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/pokemon">Pokemon List</a></li>
+                        <li><a href="#">Placeholder</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="nav navbar-nav navbar-right">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search..." name="srch-term" id="srch-term" data-toggle="tooltip" title="Note Search currently doesn't work :(">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                            </div>
+                    </div>
+                </form>
+            </div>    
+        </div>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="" id="moves" style="margin-top: 10px;">
+                <table id="pokeTable" class="table table-striped">
+                    <thead>
+                    <tr class="header">
+                        <th class="center">ID</th>
+                        <th class="center">Name</th>
+                        <th class="center">Height</th>
+                        <th class="center">Weight</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in list %}
+                        <tr class="text-center">
+                        <td><a href="/id/{{row[0]}}">{{row[0]}}</a></td>
+                        <td><a href="/pokemon/{{row[1]}}">{{row[1].title()}}</a></td>
+                        <td>{{row[2]}}</td>
+                        <td>{{row[3]}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function(){
+    $('#pokeTable').dataTable();
+});
+</script>
+</body>
+</html>

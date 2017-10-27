@@ -1,6 +1,7 @@
 import sqlite3
 
 class Pokemon:
+    # Declare Class Variables
     id = 0
     name = ""
     height = ""
@@ -12,6 +13,10 @@ class Pokemon:
     types = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 
         'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark',
         'steel', 'fairy']
+    evolvesFrom =""
+    evolvesTo = ""
+    evolutions = []
+    
     
     def __init__(self, pokename="", pokeid=""):
         if pokename:
@@ -70,6 +75,8 @@ class Pokemon:
                 format(pID=self.id))
         self.moves = c.fetchall()
         
+        self.evolutions = []
+        self.evolutionChain()
         # Close connection to DB
         conn.close()
     def idLong(self):
@@ -99,17 +106,31 @@ class Pokemon:
         ##                                                     ##
         ## This is similar to idLong but then subtracts or adds## 
         #########################################################
-        
+        lastID = 721
         if option == "previous":
-            strID = str(self.id-1)
-            if(len(strID) == 1):
-                return ("00" + strID)
-            elif(len(strID) == 2):
-                return ("0" + strID)
+            if self.id == '1' or self.id == 1:
+                return str(lastID)
             else:
-                return strID
+                strID = str(self.id-1)
+                if(len(strID) == 1):
+                    return ("00" + strID)
+                elif(len(strID) == 2):
+                    return ("0" + strID)
+                else:
+                    return strID
         elif option == "next":
-            strID = str(self.id+1)
+            if self.id == '721' or self.id == 721:
+                return "001"
+            else:
+                strID = str(self.id+1)
+                if(len(strID) == 1):
+                    return ("00" + strID)
+                elif(len(strID) == 2):
+                    return ("0" + strID)
+                else:
+                    return strID
+        else:
+            strID = str(option)
             if(len(strID) == 1):
                 return ("00" + strID)
             elif(len(strID) == 2):
@@ -162,24 +183,114 @@ class Pokemon:
         sqlite_file = 'veekun-pokedex.sqlite'
         conn = sqlite3.connect(sqlite_file)
         c = conn.cursor()
+       
+        lastID = 721
         
         if option == "previous":
-            prevID = self.id - 1
-            # Currently gets identifier from the pokemon table using the previous id
-            c.execute("SELECT identifier FROM pokemon WHERE id='{pid}'".\
-                format(pid=(prevID)))
-            results = c.fetchall()
-            return results[0][0]
+            if self.id == '1' or self.id == 1:
+                # Currently gets identifier from the pokemon table using the previous id
+                c.execute("SELECT identifier FROM pokemon WHERE id='{pid}'".\
+                    format(pid=(str(lastID))))
+                results = c.fetchall()
+                return results[0][0]
+            else:
+                prevID = self.id - 1
+                # Currently gets identifier from the pokemon table using the previous id
+                c.execute("SELECT identifier FROM pokemon WHERE id='{pid}'".\
+                    format(pid=(prevID)))
+                results = c.fetchall()
+                return results[0][0]
         elif option == "next":
-            nextID = self.id + 1
-            # Currently gets * from the pokemon table using the next id
-            c.execute("SELECT identifier FROM pokemon WHERE id='{pid}'".\
-                format(pid=(nextID)))
-            results = c.fetchall()
-            return results[0][0]
+            if self.id == lastID:
+                # Currently gets identifier from the pokemon table using the previous id
+                c.execute("SELECT identifier FROM pokemon WHERE id='1'")
+                results = c.fetchall()
+                return results[0][0]
+            else:
+                nextID = self.id + 1
+                # Currently gets * from the pokemon table using the next id
+                c.execute("SELECT identifier FROM pokemon WHERE id='{pid}'".\
+                    format(pid=(nextID)))
+                results = c.fetchall()
+                return results[0][0]
             
         # Close the connection
         conn.close()
             
         
+    def evolutionChain(self):
+        # Connect to SQLite3 Database
+        sqlite_file = 'veekun-pokedex.sqlite'
+        conn = sqlite3.connect(sqlite_file)
+        c = conn.cursor()
         
+        c.execute('''SELECT evolves_from_species_id FROM pokemon_species WHERE id="{pID}"'''.\
+                format(pID=self.id))
+            
+        evolveID = c.fetchall()
+        if evolveID:
+            evolveID = evolveID[0][0]
+        
+            # Currently gets identifier from the pokemon table using the evolvesFromID
+            c.execute("SELECT identifier FROM pokemon_species WHERE id='{pid}'".\
+             format(pid=evolveID))
+            results = c.fetchall()
+            if results:
+                self.evolutions.insert(0,results[0][0])
+                self.evolutions.insert(1, self.name)
+                
+            # Check to see if there was another previous evolutionChain
+            c.execute('''SELECT evolves_from_species_id FROM pokemon_species WHERE id="{pID}"'''.\
+                format(pID=evolveID))
+            
+            evolveID = c.fetchall()
+            if evolveID:
+                evolveID = evolveID[0][0]
+        
+                # Currently gets identifier from the pokemon table using the evolvesFromID
+                c.execute("SELECT identifier FROM pokemon_species WHERE id='{pid}'".\
+                    format(pid=evolveID))
+                results = c.fetchall()
+                if results:
+                    self.evolutions.insert(0,results[0][0])
+        if not self.evolutions:
+            self.evolutions.insert(0, self.name)
+        c.execute('''SELECT id FROM pokemon_species WHERE evolves_from_species_id="{pID}"'''.\
+                format(pID=self.id))
+            
+        evolveID = c.fetchall()
+        if evolveID:
+            evolveID = evolveID[0][0];
+        
+            # Currently gets * from the pokemon table using the next id
+            c.execute("SELECT identifier FROM pokemon_species WHERE id='{pid}'".\
+             format(pid=evolveID))
+            results = c.fetchall()
+            if results:
+                self.evolutions.append(results[0][0])
+                
+            # Check to see if there is another evolution after
+            c.execute('''SELECT id FROM pokemon_species WHERE evolves_from_species_id="{pID}"'''.\
+                format(pID=evolveID))
+            
+            evolveID = c.fetchall()
+            if evolveID:
+                evolveID = evolveID[0][0]
+        
+                # Currently gets identifier from the pokemon table using the evolvesFromID
+                c.execute("SELECT identifier FROM pokemon_species WHERE id='{pid}'".\
+                    format(pid=evolveID))
+                results = c.fetchall()
+                if results:
+                    self.evolutions.append(results[0][0])
+    def queryIDFromName(self, qname):
+        # Connect to SQLite3 Database
+        sqlite_file = 'veekun-pokedex.sqlite'
+        conn = sqlite3.connect(sqlite_file)
+        c = conn.cursor()
+        
+        c.execute("SELECT id FROM pokemon WHERE identifier='{pname}'".\
+            format(pname=qname))
+        tempName = c.fetchall()
+        if tempName:
+            return tempName[0][0]
