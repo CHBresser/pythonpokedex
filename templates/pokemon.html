@@ -139,35 +139,28 @@
             </div>
             <div class="tab-pane fade bg-primary" id="evolution" style="margin-top: 15px">
                 <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                        {% if curPokemon.evolvesFrom %}
-                            <img class="img-thumbnail img-responsive img-profile" style="width:150px;border: 3px solid black; float: left; margin-right: 5px; margin-bottom: 0px;" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{curPokemon.idLongOther(curPokemon.queryIDFromName(curPokemon.evolvesFrom))}}.png"></img>
-                        {% endif %}
-                    </div>
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                        <img class="img-thumbnail img-responsive img-profile" style="width:150px;border: 3px solid black; margin-bottom: 10px; float:left;" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{curPokemon.idLong()}}.png"></img>
-                    </div>
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                        {% if curPokemon.evolvesTo %}
-                            <img class="img-thumbnail img-responsive img-profile" style="width:150px;border: 3px solid black; float:left; margin-left: 5px; margin-bottom: 0px;" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{curPokemon.idLongOther(curPokemon.queryIDFromName(curPokemon.evolvesTo))}}.png"></img>
-                            
-                        {% endif %}
-                    </div>
+                    {% if curPokemon.evolutions %}
+                        {% for evolution in curPokemon.evolutions %}
+                            <div class="col-sm-{{ (12 / curPokemon.evolutions|length)|int }}">
+                                <img class="img-thumbnail img-responsive img-profile" style="width:150px;border: 3px solid black; float: left; margin-right: 5px; margin-bottom: 0px;" src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/{{curPokemon.idLongOther(curPokemon.queryIDFromName(evolution))}}.png"></img>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                    {% endif %}
                 </div>
                 <div class="row">
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                        {% if curPokemon.evolvesFrom %}
-                            <h2 style="text-align: left;">{{curPokemon.evolvesFrom.title()}}</h2>
+                        {% if curPokemon.evolutions %}
+                            {% for evolution in curPokemon.evolutions %}
+                                {# Filters the length from curPokemon.evolutions and then filters agian to verify that it is a integer, otherwise it returns a float #}
+                                <div class="col-sm-{{ (12 / curPokemon.evolutions|length)|int }}">
+                                <h2>{{ evolution }}</h2>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <h1 class="text-center"> This pokemon has no evolutions, if this is in error, report to github@chbresser.com</h1>
                         {% endif %}
-                    </div>
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                        <h2>{{curPokemon.name.title()}}</h2>
-                    </div>
-                    <div class="col-sm-4 col-md-4 col-lg-4">
-                        {% if curPokemon.evolvesTo %}
-                            <h2>{{curPokemon.evolvesTo.title()}}</h2>
-                        {% endif %}
-                    </div>
+                            
+                </div>
             </div>
         </div>
     </div>
