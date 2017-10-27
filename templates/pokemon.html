@@ -175,7 +175,7 @@
                             {% for evolution in curPokemon.evolutions %}
                                 {# Filters the length from curPokemon.evolutions and then filters again to verify that it is a integer, otherwise it returns a float #}
                                 <div class="col-sm-{{ (12 / curPokemon.evolutions|length)|int }}">
-                                <h2>{{ evolution }}</h2>
+                                <h2>{{ evolution.title() }}</h2>
                                 </div>
                             {% endfor %}
                         {% else %}
