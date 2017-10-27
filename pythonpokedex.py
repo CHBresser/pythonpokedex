@@ -34,7 +34,20 @@ def idPokemon(id):
     curPokemon = Pokemon(all_rows[0][1])
     return render_template(
         'pokemon.html', **locals())
-        
+
+# List of Pokemon
+@app.route('/pokemon/')
+def pokemonList():
+    # Connect to SQLite3 Database
+    sqlite_file = 'veekun-pokedex.sqlite'
+    conn = sqlite3.connect(sqlite_file)
+    c = conn.cursor()
+    
+    c.execute('''SELECT id, identifier, height, weight FROM pokemon''')
+    list = c.fetchall()
+    return render_template(
+        'pokemonlist.html', **locals())
+
 # Autorun the app on 0.0.0.0 when this python script is called. 
 if __name__ == "__main__":
         app.run(host='0.0.0.0')
