@@ -230,7 +230,8 @@ class Pokemon:
             c.execute("SELECT identifier FROM pokemon_species WHERE id='{pid}'".\
              format(pid=evolveID))
             results = c.fetchall()
-            self.evolvesFrom = results[0][0]
+            if results:
+                self.evolvesFrom = results[0][0]
         
         c.execute('''SELECT id FROM pokemon_species WHERE evolves_from_species_id="{pID}"'''.\
                 format(pID=self.id))
@@ -243,7 +244,8 @@ class Pokemon:
             c.execute("SELECT identifier FROM pokemon_species WHERE id='{pid}'".\
              format(pid=evolveID))
             results = c.fetchall()
-            self.evolvesTo = results[0][0]
+            if results:
+                self.evolvesTo = results[0][0]
     def queryIDFromName(self, qname):
         # Connect to SQLite3 Database
         sqlite_file = 'veekun-pokedex.sqlite'
